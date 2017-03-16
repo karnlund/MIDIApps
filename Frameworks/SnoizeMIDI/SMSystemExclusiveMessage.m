@@ -677,7 +677,8 @@ void writeVariableLengthFieldIntoSMF(Byte **pPtr, const UInt32 value)
 
     inMessage = NO;
     for (p=buffer, byteIndex = 0; byteIndex < byteCount; byteIndex++, p++) {
-        if (inMessage && (*p & 0x80)) {
+        // Kurt changed this logic to only look for SysexEOX 0xF7
+        if (inMessage && (*p == 0xF7)) {
             range.length = byteIndex - range.location;
             if (range.length > 0) {
                 NSData *sysexData;
